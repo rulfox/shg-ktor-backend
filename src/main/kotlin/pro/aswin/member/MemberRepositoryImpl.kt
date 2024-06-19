@@ -4,6 +4,7 @@ import com.mongodb.MongoException
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
 import com.mongodb.client.model.Filters
+import org.bson.conversions.Bson
 import org.bson.types.ObjectId
 import pro.aswin.exception.InsertionFailedException
 import pro.aswin.exception.RequestedContentNotFoundException
@@ -28,5 +29,14 @@ class MemberRepositoryImpl(database: MongoDatabase): MemberRepository {
 
     override suspend fun insertMember(member: Member): Boolean {
         return members.insertOne(member).wasAcknowledged()
+    }
+
+    override suspend fun login(phoneNumber: String, password: String): Member? {
+        val filters = mutableListOf<Bson>()
+        filters.add(Filters.eq(Member::phoneNumber.name, phoneNumber))
+        filters.add(Filters.eq(Member::password.name, password))
+        val combinedFilter = Filters.and(filters)
+        val userFound = members.find(combinedFilter).firstOrNull()
+        return userFound
     }
 }

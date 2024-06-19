@@ -30,4 +30,20 @@ fun Route.memberRoutes(memberService: MemberService){
             call.respond(ApiResponse.Success(data = insertedMember, status = HttpStatusCode.Created.value, message = "Member successfully registered"))
         }
     }
+
+    route("/authentication"){
+        post("/login") {
+            val loginRequest = call.receive<LoginRequest>()
+            when {
+                loginRequest.phoneNumber.isEmpty() ->{
+                    throw EntityNotFoundException(responseCode = HttpStatusCode.BadRequest.value, errorReason = "Field phoneNumber not found")
+                }
+                loginRequest.password.isEmpty() ->{
+                    throw EntityNotFoundException(responseCode = HttpStatusCode.BadRequest.value, errorReason = "Field password not found")
+                }
+            }
+            val authenticatedMember = memberService.login(loginRequest.phoneNumber, loginRequest.password)
+            call.respond(ApiResponse.Success(data = authenticatedMember, status = HttpStatusCode.OK.value, message = "Member successfully registered"))
+        }
+    }
 }

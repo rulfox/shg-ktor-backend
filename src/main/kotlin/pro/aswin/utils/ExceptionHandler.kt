@@ -42,6 +42,12 @@ object ExceptionHandler {
                 )
             }
 
+            is ValidationException -> {
+                call.respond(
+                    ApiResponse.Error<Nothing>(status = cause.responseCode, message = cause.errorReason)
+                )
+            }
+
             else -> {
                 if (debugMode) {
                     // Printout stacktrace on console

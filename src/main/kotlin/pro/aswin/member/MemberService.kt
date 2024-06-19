@@ -3,6 +3,7 @@ package pro.aswin.member
 import io.ktor.http.*
 import pro.aswin.exception.InsertionFailedException
 import pro.aswin.exception.RequestedContentNotFoundException
+import pro.aswin.exception.ValidationException
 import pro.aswin.member.routing.InsertMemberRequest
 
 class MemberService(private val repository: MemberRepository) {
@@ -36,6 +37,15 @@ class MemberService(private val repository: MemberRepository) {
             } else {
                 throw InsertionFailedException(responseCode = 400, errorReason = "Unable to insert member")
             }
+        }
+    }
+
+    suspend fun login(phoneNumber: String, password: String): Member {
+        val authenticatedMember = repository.login(phoneNumber, password)
+        authenticatedMember?.let {
+            return it
+        } ?: run {
+            throw ValidationException(responseCode = HttpStatusCode.Unauthorized.value, errorReason = "Invalid credentials")
         }
     }
 }
