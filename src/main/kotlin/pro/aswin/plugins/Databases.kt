@@ -8,6 +8,7 @@ import org.bson.codecs.configuration.CodecRegistries.fromProviders
 import org.bson.codecs.configuration.CodecRegistries.fromRegistries
 import org.bson.codecs.configuration.CodecRegistry
 import org.bson.codecs.pojo.PojoCodecProvider
+import pro.aswin.jwt.JwtService
 import pro.aswin.member.MemberRepositoryImpl
 import pro.aswin.member.MemberService
 
@@ -16,7 +17,9 @@ fun Application.configureDatabases() {
     val mongoDatabase = connectToMongoDB()
     val memberRepository = MemberRepositoryImpl(mongoDatabase)
     val memberService = MemberService(memberRepository)
-    configureRouting(memberService)
+    val jwtService = JwtService(this, memberService = memberService)
+    configureRouting(memberService, jwtService)
+    configureSecurity(jwtService = jwtService)
 }
 
 /**

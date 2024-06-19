@@ -10,7 +10,6 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 
-@OptIn(ExperimentalSerializationApi::class)
 fun Application.configureSerialization() {
     install(ContentNegotiation) {
         val converter = KotlinxSerializationConverter(Json {
@@ -21,11 +20,5 @@ fun Application.configureSerialization() {
         register(Json, converter)
         register(ContentType.Application.OctetStream, converter)
 
-    }
-
-    routing {
-        get("/json/kotlinx-serialization") {
-            call.respond(mapOf("hello" to "world"))
-        }
     }
 }
