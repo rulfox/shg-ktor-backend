@@ -1,15 +1,14 @@
 package pro.aswin.member
 
-import com.mongodb.MongoException
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
 import com.mongodb.client.model.Filters
 import org.bson.conversions.Bson
 import org.bson.types.ObjectId
-import pro.aswin.exception.InsertionFailedException
-import pro.aswin.exception.RequestedContentNotFoundException
+import org.koin.core.component.KoinComponent
+import pro.aswin.member.routing.LoginResponse
 
-class MemberRepositoryImpl(database: MongoDatabase): MemberRepository {
+class MemberRepositoryImpl(database: MongoDatabase): KoinComponent, MemberRepository {
 
     companion object {
         const val MEMBER_COLLECTION = "member"
@@ -31,12 +30,15 @@ class MemberRepositoryImpl(database: MongoDatabase): MemberRepository {
         return members.insertOne(member).wasAcknowledged()
     }
 
-    override suspend fun login(phoneNumber: String, password: String): Member? {
+    override suspend fun login(phoneNumber: String, password: String): LoginResponse? {
         val filters = mutableListOf<Bson>()
         filters.add(Filters.eq(Member::phoneNumber.name, phoneNumber))
         filters.add(Filters.eq(Member::password.name, password))
         val combinedFilter = Filters.and(filters)
-        val userFound = members.find(combinedFilter).firstOrNull()
-        return userFound
+        members.find(combinedFilter).firstOrNull()?.let {
+            return it.toLoginResponse()
+        } ?: run {
+            return null
+        }
     }
 }

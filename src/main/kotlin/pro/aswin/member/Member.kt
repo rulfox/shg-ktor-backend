@@ -5,7 +5,7 @@ import org.bson.codecs.pojo.annotations.BsonCreator
 import org.bson.codecs.pojo.annotations.BsonId
 import org.bson.codecs.pojo.annotations.BsonProperty
 import org.bson.types.ObjectId
-import pro.aswin.member.routing.MemberResponse
+import pro.aswin.member.routing.LoginResponse
 
 import pro.aswin.utils.ObjectIdSerializer
 
@@ -22,13 +22,14 @@ data class Member @BsonCreator constructor(
     @BsonProperty("roleId") val roleId: Int?,
     @BsonProperty("password") val password: String
 ){
-    fun toResponse() = MemberResponse(
+    fun toLoginResponse() = LoginResponse(
         id = id.toString(),
         shgId = shgId,
         name = name,
         address = address,
         phoneNumber = phoneNumber,
         emailId = emailId,
-        roleId = roleId
+        roleId = roleId,
+        token = null
     )
 }

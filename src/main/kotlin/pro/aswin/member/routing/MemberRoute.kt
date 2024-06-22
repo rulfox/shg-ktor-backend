@@ -42,7 +42,7 @@ fun Route.memberRoutes(memberService: MemberService){
                     throw EntityNotFoundException(responseCode = HttpStatusCode.BadRequest.value, errorReason = "Field password not found")
                 }
             }
-            val authenticatedMember = memberService.login(loginRequest.phoneNumber, loginRequest.password)
+            val authenticatedMember = memberService.login(loginRequest)
             call.respond(ApiResponse.Success(data = authenticatedMember, status = HttpStatusCode.OK.value, message = "Member successfully registered"))
         }
     }
