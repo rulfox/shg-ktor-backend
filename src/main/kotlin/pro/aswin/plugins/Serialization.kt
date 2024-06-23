@@ -9,6 +9,9 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import org.bson.types.ObjectId
+import pro.aswin.utils.ObjectIdSerializer
 
 fun Application.configureSerialization() {
     install(ContentNegotiation) {
@@ -16,6 +19,10 @@ fun Application.configureSerialization() {
             ignoreUnknownKeys = true
             prettyPrint = true
             isLenient = true
+            serializersModule = SerializersModule {
+                contextual(ObjectId::class, ObjectIdSerializer)
+            }
+
         })
         register(Json, converter)
         register(ContentType.Application.OctetStream, converter)

@@ -8,8 +8,10 @@ import pro.aswin.jwt.JwtService
 import pro.aswin.jwt.jwtAuthenticationRoutes
 import pro.aswin.member.MemberService
 import pro.aswin.member.routing.memberRoutes
+import pro.aswin.shg.repository.SelfHelpGroupService
+import pro.aswin.shg.routing.shgRoutes
 
-fun Application.configureRouting(memberService: MemberService, jwtService: JwtService) {
+fun Application.configureRouting(memberService: MemberService, jwtService: JwtService, selfHelpGroupService: SelfHelpGroupService) {
     routing {
         get("/") {
             call.respondText("Hello WorldX!")
@@ -20,5 +22,8 @@ fun Application.configureRouting(memberService: MemberService, jwtService: JwtSe
         }
         memberRoutes(memberService = memberService)
         jwtAuthenticationRoutes(jwtService = jwtService)
+        route("/api/shg"){
+            shgRoutes(selfHelpGroupService = selfHelpGroupService)
+        }
     }
 }

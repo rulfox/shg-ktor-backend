@@ -12,6 +12,9 @@ import pro.aswin.jwt.JwtRepositoryImpl
 import pro.aswin.jwt.JwtService
 import pro.aswin.member.MemberRepositoryImpl
 import pro.aswin.member.MemberService
+import pro.aswin.shg.repository.SelfHelpGroupRepository
+import pro.aswin.shg.repository.SelfHelpGroupRepositoryImpl
+import pro.aswin.shg.repository.SelfHelpGroupService
 
 
 fun Application.configureDatabases() {
@@ -20,8 +23,10 @@ fun Application.configureDatabases() {
     val jwtRepository = JwtRepositoryImpl(memberRepository = memberRepository)
     val jwtService = JwtService(application = this, jwtRepository = jwtRepository)
     val memberService = MemberService(repository = memberRepository, jwtService = jwtService)
+    val selfHelpGroupRepository = SelfHelpGroupRepositoryImpl(mongoDatabase)
+    val selfHelpGroupService = SelfHelpGroupService(selfHelpGroupRepository)
 
-    configureRouting(memberService, jwtService)
+    configureRouting(memberService, jwtService, selfHelpGroupService)
     configureSecurity(jwtService = jwtService)
 }
 
