@@ -25,9 +25,9 @@ fun Route.memberRoutes(memberService: MemberService){
             call.respond(ApiResponse.Success(data = insertedMember, status = HttpStatusCode.Created.value, message = "Member successfully registered"))
         }
 
-        get("/find") {
-            val insertedMember = memberService.registerMember(InsertMemberRequest(phoneNumber = "7777", password = "asdfhkjas", shgId = null, address = null, emailId = null, name = null, roleId = null))
-            call.respond(ApiResponse.Success(data = insertedMember, status = HttpStatusCode.Created.value, message = "Member successfully registered"))
+        get("/getMemberById") {
+            val member = memberService.getMemberById("667257bccf680e5df1653565")
+            call.respond(ApiResponse.Success(data = member, status = HttpStatusCode.Created.value, message = "Member successfully registered"))
         }
     }
 

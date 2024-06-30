@@ -18,7 +18,7 @@ data class CreateSelfHelpGroupRequest(
         id = ObjectId(),
         name = name,
         address = address,
-        memberIds = listOf(ObjectId(memberId)) ?: arrayListOf(),
+        memberIds = listOf(memberId),
         presidentId = ObjectId(memberId),
         secretaryId = null
     )

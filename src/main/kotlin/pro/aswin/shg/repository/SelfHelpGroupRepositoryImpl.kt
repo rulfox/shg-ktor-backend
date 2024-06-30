@@ -3,6 +3,7 @@ package pro.aswin.shg.repository
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
 import com.mongodb.client.model.Filters
+import org.bson.Document
 import org.bson.types.ObjectId
 import org.koin.core.component.KoinComponent
 import pro.aswin.shg.model.SelfHelpGroup
@@ -20,7 +21,10 @@ class SelfHelpGroupRepositoryImpl(private val database: MongoDatabase): KoinComp
     }
 
     override suspend fun getSelfHelpGroupById(id: String): SelfHelpGroup? {
-        val filter = Filters.eq(SelfHelpGroup::id.name, ObjectId(id))
-        return selfHelpGroups.find(filter).firstOrNull()
+        val isValid = ObjectId.isValid(id)
+        val query = Document("id", ObjectId(id))
+        val shg = selfHelpGroups.find(query).firstOrNull()
+        return shg
+        //return selfHelpGroups.find(SelfHelpGroup::id eq ObjectId(id)).firstOrNull()
     }
 }

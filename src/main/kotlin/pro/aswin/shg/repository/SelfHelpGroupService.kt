@@ -28,7 +28,7 @@ class SelfHelpGroupService(private val selfHelpGroupRepository: SelfHelpGroupRep
         createdShg?.let {
             return it.toGetShgResponse()
         } ?: run {
-            throw RequestedContentNotFoundException(responseCode = 400, errorReason = "Self Help Group created. Unable to get the details.")
+            throw RequestedContentNotFoundException(responseCode = 400, errorReason = "Unable to get the details.")
         }
     }
 }

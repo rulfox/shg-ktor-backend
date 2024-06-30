@@ -1,6 +1,8 @@
 package pro.aswin.shg.model
 
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
+import org.bson.codecs.pojo.annotations.BsonCreator
 import org.bson.codecs.pojo.annotations.BsonId
 import org.bson.codecs.pojo.annotations.BsonProperty
 import org.bson.types.ObjectId
@@ -8,7 +10,8 @@ import pro.aswin.shg.routing.CreateSelfHelpGroupResponse
 import pro.aswin.shg.routing.GetSelfHelpGroupResponse
 import pro.aswin.utils.ObjectIdSerializer
 
-data class SelfHelpGroup(
+@Serializable
+data class SelfHelpGroup @BsonCreator constructor(
     @Serializable(with = ObjectIdSerializer::class)
     @BsonId
     @BsonProperty("id")
@@ -17,10 +20,13 @@ data class SelfHelpGroup(
     val name: String,
     @BsonProperty("address")
     val address: String,
+    @Contextual
     @BsonProperty("memberIds")
-    val memberIds: List<ObjectId> ?= null,
+    val memberIds: List<String> ?= null,
+    @Contextual
     @BsonProperty("secretaryId")
     val secretaryId: ObjectId ?= null,
+    @Contextual
     @BsonProperty("presidentId")
     val presidentId: ObjectId ?= null
 ) {

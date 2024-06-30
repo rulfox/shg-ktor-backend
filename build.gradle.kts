@@ -30,8 +30,12 @@ dependencies {
     implementation("io.ktor:ktor-server-host-common-jvm")
     implementation("io.ktor:ktor-server-call-logging-jvm")
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
+
     implementation("io.ktor:ktor-serialization")
-    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
+    implementation("io.ktor:ktor-serialization-kotlinx-json")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.5.1")
+    implementation("org.mongodb:bson-kotlinx:5.1.0")
+
     implementation("org.mongodb:mongodb-driver-core:4.9.0")
     implementation("org.mongodb:mongodb-driver-sync:4.9.0")
     implementation("org.mongodb:bson:4.9.0")
