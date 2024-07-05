@@ -10,16 +10,13 @@ import org.bson.codecs.configuration.CodecRegistry
 import org.bson.codecs.pojo.PojoCodecProvider
 import pro.aswin.jwt.JwtRepositoryImpl
 import pro.aswin.jwt.JwtService
-import pro.aswin.member.MemberRepositoryImpl
-import pro.aswin.member.MemberService
 import pro.aswin.shg.repository.SelfHelpGroupRepository
 import pro.aswin.shg.repository.SelfHelpGroupRepositoryImpl
 import pro.aswin.shg.repository.SelfHelpGroupService
 
 
 fun Application.configureDatabases() {
-    val mongoDatabase = connectToMongoDB()
-    val memberRepository = MemberRepositoryImpl(mongoDatabase)
+    /*val mongoDatabase = connectToMongoDB()
     val jwtRepository = JwtRepositoryImpl(memberRepository = memberRepository)
     val jwtService = JwtService(application = this, jwtRepository = jwtRepository)
     val memberService = MemberService(repository = memberRepository, jwtService = jwtService)
@@ -27,7 +24,7 @@ fun Application.configureDatabases() {
     val selfHelpGroupService = SelfHelpGroupService(selfHelpGroupRepository)
 
     configureRouting(memberService, jwtService, selfHelpGroupService)
-    configureSecurity(jwtService = jwtService)
+    configureSecurity(jwtService = jwtService)*/
 }
 
 /**

@@ -7,9 +7,7 @@ import org.bson.codecs.pojo.annotations.BsonProperty
 import org.bson.types.ObjectId
 import pro.aswin.utils.ObjectIdSerializer
 
-@Serializable
 data class CreateSelfHelpGroupResponse(
-    @Serializable(with = ObjectIdSerializer::class)
     @BsonId
     @BsonProperty("id")
     val id: ObjectId,
@@ -24,5 +22,8 @@ data class CreateSelfHelpGroupResponse(
     val secretaryId: ObjectId ?= null,
     @Contextual
     @BsonProperty("presidentId")
-    val presidentId: ObjectId ?= null
+    val presidentId: ObjectId ?= null,
+    @Contextual
+    @BsonProperty("treasurerId")
+    val treasurerId: ObjectId ?= null
 )

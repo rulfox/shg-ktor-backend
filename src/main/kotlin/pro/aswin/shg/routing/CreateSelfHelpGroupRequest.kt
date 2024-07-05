@@ -15,11 +15,13 @@ data class CreateSelfHelpGroupRequest(
     val memberId: String
 ){
     fun toDomain(memberId: String) = SelfHelpGroup(
-        id = ObjectId(),
+        _id = ObjectId(),
         name = name,
         address = address,
-        memberIds = listOf(memberId),
+        activeMemberIds = listOf(ObjectId(memberId)),
         presidentId = ObjectId(memberId),
-        secretaryId = null
+        secretaryId = null,
+        treasurerId = null,
+        removedMemberIds = null
     )
 }

@@ -8,8 +8,6 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import kotlinx.coroutines.runBlocking
 import pro.aswin.jwt.JwtService
-import pro.aswin.member.Member
-import pro.aswin.member.MemberService
 import java.util.*
 
 fun Application.configureSecurity(jwtService: JwtService) {

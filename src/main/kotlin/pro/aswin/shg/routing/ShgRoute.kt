@@ -6,7 +6,6 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import pro.aswin.exception.EntityNotFoundException
-import pro.aswin.member.MemberService
 import pro.aswin.shg.repository.SelfHelpGroupService
 import pro.aswin.utils.ApiResponse
 

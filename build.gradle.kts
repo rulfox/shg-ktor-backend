@@ -6,7 +6,6 @@ val koin_version: String by project
 plugins {
     kotlin("jvm") version "1.9.24"
     id("io.ktor.plugin") version "2.3.11"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.24"
 }
 
 group = "pro.aswin"
@@ -24,22 +23,19 @@ repositories {
 }
 
 dependencies {
-    implementation("io.ktor:ktor-server-core-jvm")
-    implementation("io.ktor:ktor-server-auth-jvm")
-    implementation("io.ktor:ktor-server-auth-jwt-jvm")
-    implementation("io.ktor:ktor-server-host-common-jvm")
-    implementation("io.ktor:ktor-server-call-logging-jvm")
-    implementation("io.ktor:ktor-server-content-negotiation-jvm")
-
-    implementation("io.ktor:ktor-serialization")
-    implementation("io.ktor:ktor-serialization-kotlinx-json")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.5.1")
-    implementation("org.mongodb:bson-kotlinx:5.1.0")
+    implementation("io.ktor:ktor-server-core")
+    implementation("io.ktor:ktor-server-auth")
+    implementation("io.ktor:ktor-server-auth-jwt")
+    implementation("io.ktor:ktor-server-host-common")
+    implementation("io.ktor:ktor-server-call-logging")
+    implementation("io.ktor:ktor-server-content-negotiation")
+    implementation("io.ktor:ktor-serialization-gson:$ktor_version")
 
     implementation("org.mongodb:mongodb-driver-core:4.9.0")
     implementation("org.mongodb:mongodb-driver-sync:4.9.0")
+
     implementation("org.mongodb:bson:4.9.0")
-    implementation("io.ktor:ktor-server-netty-jvm")
+    implementation("io.ktor:ktor-server-netty")
     implementation("io.ktor:ktor-server-status-pages:$ktor_version")
     implementation("io.insert-koin:koin-core:$koin_version")
     implementation("io.insert-koin:koin-ktor:$koin_version")

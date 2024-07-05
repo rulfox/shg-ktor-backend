@@ -1,29 +1,27 @@
 package pro.aswin.member.routing
 
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.bson.codecs.pojo.annotations.BsonId
 import org.bson.types.ObjectId
-import pro.aswin.member.Member
+import pro.aswin.member.data.Member
 import pro.aswin.member.routing.MemberResponse
 
 @Serializable
 data class InsertMemberRequest(
-    val shgId: Int?= null,
+    val shgId: String?= null,
     val name: String?= null,
     val address: String?= null,
-    val phoneNumber: String,
-    val emailId: String?= null,
-    val roleId: Int?= null,
-    val password: String
+    val phone: String,
+    val email: String
 ){
     fun toDomain() = Member(
         id = ObjectId(),
-        shgId = shgId,
+        shgIds = shgId?.let { arrayListOf(ObjectId(it)) } ?: listOf() ,
         name = name,
         address = address,
-        phoneNumber = phoneNumber,
-        emailId = emailId,
-        roleId = roleId,
-        password = password
+        phone = phone,
+        email = email,
+        passwordHash = null,
     )
 }

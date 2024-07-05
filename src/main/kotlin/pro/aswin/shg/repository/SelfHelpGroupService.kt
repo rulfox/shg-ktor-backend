@@ -12,7 +12,7 @@ class SelfHelpGroupService(private val selfHelpGroupRepository: SelfHelpGroupRep
         val createSelfHelpGroup = request.toDomain(creatingMemberId)
         val isCreated = selfHelpGroupRepository.createSelfHelpGroup(creatingMemberId, createSelfHelpGroup)
         if(isCreated){
-            val createdShg = selfHelpGroupRepository.getSelfHelpGroupById(createSelfHelpGroup.id.toString())
+            val createdShg = selfHelpGroupRepository.getSelfHelpGroupById(createSelfHelpGroup._id.toString())
             createdShg?.let {
                 return it.toCreatedShgResponse()
             } ?: run {

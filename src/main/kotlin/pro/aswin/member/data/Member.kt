@@ -1,35 +1,31 @@
-package pro.aswin.member
+package pro.aswin.member.data
 
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.bson.codecs.pojo.annotations.BsonCreator
 import org.bson.codecs.pojo.annotations.BsonId
 import org.bson.codecs.pojo.annotations.BsonProperty
 import org.bson.types.ObjectId
 import pro.aswin.member.routing.LoginResponse
-
 import pro.aswin.utils.ObjectIdSerializer
 
-@Serializable
 data class Member @BsonCreator constructor(
-    @Serializable(with = ObjectIdSerializer::class)
-    @BsonId
-    @BsonProperty("id") val id: ObjectId,
-    @BsonProperty("shgId") val shgId: Int?,
+    @BsonId @BsonProperty("id") val id: ObjectId,
     @BsonProperty("name") val name: String?,
+    @BsonProperty("phone") val phone: String?,
+    @BsonProperty("email") val email: String,
     @BsonProperty("address") val address: String?,
-    @BsonProperty("phoneNumber") val phoneNumber: String,
-    @BsonProperty("emailId") val emailId: String?,
-    @BsonProperty("roleId") val roleId: Int?,
-    @BsonProperty("password") val password: String
-){
+    @BsonProperty("shgIds") val shgIds: List<ObjectId>?,
+    @BsonProperty("passwordHash") val passwordHash: String?,
+    @BsonProperty("registeredAt") val registeredAt: Long = System.currentTimeMillis()
+) {
     fun toLoginResponse() = LoginResponse(
         id = id.toString(),
-        shgId = shgId,
+        shgIds = shgIds,
         name = name,
         address = address,
-        phoneNumber = phoneNumber,
-        emailId = emailId,
-        roleId = roleId,
+        phone = phone,
+        email = email,
         token = null
     )
 }

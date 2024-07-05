@@ -5,13 +5,14 @@ import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.server.auth.jwt.*
 import kotlinx.coroutines.runBlocking
+import org.bson.types.ObjectId
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import pro.aswin.member.MemberRepository
+import pro.aswin.member.domain.GetMemberUseCase
 import pro.aswin.member.routing.LoginRequest
 import java.util.*
 
-class JwtRepositoryImpl(private val memberRepository: MemberRepository): KoinComponent, JwtRepository {
+class JwtRepositoryImpl(private val memberUseCase: GetMemberUseCase): KoinComponent, JwtRepository {
 
     override fun createJwtVerifier(audience: String, issuer: String, algorithm: Algorithm): JWTVerifier {
         return JWT
@@ -26,7 +27,7 @@ class JwtRepositoryImpl(private val memberRepository: MemberRepository): KoinCom
             .create()
             .withAudience(audience)
             .withIssuer(issuer)
-            .withClaim(LoginRequest::phoneNumber.name, request.phoneNumber)
+            .withClaim(LoginRequest::email.name, request.email)
             .withExpiresAt(expiry)
             .sign(algorithm)
     }
@@ -34,7 +35,7 @@ class JwtRepositoryImpl(private val memberRepository: MemberRepository): KoinCom
     override fun jwtTokenValidator(audience: String, credential: JWTCredential): JWTPrincipal? {
         val memberID = extractPhoneNumber(credential)
         val memberFound =  runBlocking {
-            memberID?.let { memberRepository.getMemberByPhoneNumber(it) }
+            memberID?.let { memberUseCase.execute(ObjectId(it))}
         }
         memberFound?.let {
             if(audienceMatches(audience = audience, credential = credential)){
@@ -46,7 +47,7 @@ class JwtRepositoryImpl(private val memberRepository: MemberRepository): KoinCom
     }
 
     private fun extractPhoneNumber(credential: JWTCredential): String?{
-        return credential.payload.getClaim(LoginRequest::phoneNumber.name).asString()
+        return credential.payload.getClaim(LoginRequest::email.name).asString()
     }
 
     private fun audienceMatches(audience: String, credential: JWTCredential): Boolean{

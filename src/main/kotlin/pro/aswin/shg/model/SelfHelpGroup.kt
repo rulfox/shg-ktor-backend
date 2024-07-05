@@ -8,47 +8,39 @@ import org.bson.codecs.pojo.annotations.BsonProperty
 import org.bson.types.ObjectId
 import pro.aswin.shg.routing.CreateSelfHelpGroupResponse
 import pro.aswin.shg.routing.GetSelfHelpGroupResponse
-import pro.aswin.utils.ObjectIdSerializer
 
 @Serializable
 data class SelfHelpGroup @BsonCreator constructor(
-    @Serializable(with = ObjectIdSerializer::class)
-    @BsonId
-    @BsonProperty("id")
-    val id: ObjectId,
-    @BsonProperty("name")
-    val name: String,
-    @BsonProperty("address")
-    val address: String,
-    @Contextual
-    @BsonProperty("memberIds")
-    val memberIds: List<String> ?= null,
-    @Contextual
-    @BsonProperty("secretaryId")
-    val secretaryId: ObjectId ?= null,
-    @Contextual
-    @BsonProperty("presidentId")
-    val presidentId: ObjectId ?= null
-) {
+    @Contextual @BsonId val _id: ObjectId = ObjectId(),
+    @BsonProperty("name") val name: String,
+    @BsonProperty("address") val address: String = "",
+    @BsonProperty("activeMemberIds") val activeMemberIds: List<@Contextual ObjectId>?,
+    @BsonProperty("removedMemberIds") val removedMemberIds: List<@Contextual ObjectId>?,
+    @Contextual @BsonProperty("presidentId") val presidentId: ObjectId?,
+    @Contextual @BsonProperty("secretaryId") val secretaryId: ObjectId?,
+    @Contextual @BsonProperty("treasurerId") val treasurerId: ObjectId?
+){
     fun toCreatedShgResponse(): CreateSelfHelpGroupResponse {
         return CreateSelfHelpGroupResponse(
-            id = id,
+            id = _id,
             name = name,
             address = address,
-            memberIds = memberIds?.map { it.toString() },
+            memberIds = activeMemberIds?.map { it.toString() },
             secretaryId = secretaryId,
-            presidentId = presidentId
+            presidentId = presidentId,
+            treasurerId = treasurerId
         )
     }
 
     fun toGetShgResponse(): GetSelfHelpGroupResponse {
         return GetSelfHelpGroupResponse(
-            id = id,
+            id = _id,
             name = name,
             address = address,
-            memberIds = memberIds?.map { it.toString() },
+            memberIds = activeMemberIds?.map { it.toString() },
             secretaryId = secretaryId,
-            presidentId = presidentId
+            presidentId = presidentId,
+            treasurerId = treasurerId
         )
     }
 }

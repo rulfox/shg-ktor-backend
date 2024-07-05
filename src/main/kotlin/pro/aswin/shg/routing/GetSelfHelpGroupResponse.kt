@@ -5,11 +5,10 @@ import kotlinx.serialization.Serializable
 import org.bson.codecs.pojo.annotations.BsonId
 import org.bson.codecs.pojo.annotations.BsonProperty
 import org.bson.types.ObjectId
+import pro.aswin.utils.ObjectIdSerializer
 
 
-@Serializable
 data class GetSelfHelpGroupResponse(
-    @Contextual
     @BsonId
     @BsonProperty("id")
     val id: ObjectId,
@@ -20,10 +19,10 @@ data class GetSelfHelpGroupResponse(
     @BsonProperty("memberIds")
     @Contextual
     val memberIds: List<String> ?= null,
-    @Contextual
     @BsonProperty("secretaryId")
     val secretaryId: ObjectId ?= null,
-    @Contextual
     @BsonProperty("presidentId")
-    val presidentId: ObjectId ?= null
+    val presidentId: ObjectId ?= null,
+    @BsonProperty("treasurerId")
+    val treasurerId: ObjectId ?= null,
 )
