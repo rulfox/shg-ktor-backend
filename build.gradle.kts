@@ -6,6 +6,7 @@ val koin_version: String by project
 plugins {
     kotlin("jvm") version "1.9.24"
     id("io.ktor.plugin") version "2.3.11"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.0"
 }
 
 group = "pro.aswin"
@@ -30,6 +31,11 @@ dependencies {
     implementation("io.ktor:ktor-server-call-logging")
     implementation("io.ktor:ktor-server-content-negotiation")
     implementation("io.ktor:ktor-serialization-gson:$ktor_version")
+    implementation("com.google.code.gson:gson:2.11.0")
+    //implementation("io.ktor:ktor-server-gson:2.11.0")
+    implementation("io.ktor:ktor-serialization-kotlinx-json")
+    implementation("io.ktor:ktor-serialization-jackson:$ktor_version")
+
 
     implementation("org.mongodb:mongodb-driver-core:4.9.0")
     implementation("org.mongodb:mongodb-driver-sync:4.9.0")

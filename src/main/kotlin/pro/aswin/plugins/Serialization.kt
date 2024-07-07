@@ -22,6 +22,7 @@ fun Application.configureSerialization() {
     install(ContentNegotiation) {
         gson {
             registerTypeAdapter(ObjectId::class.java, ObjectIdSerializer)
+            serializeNulls()
             setDateFormat(DateFormat.LONG)
             setPrettyPrinting()
         }

@@ -8,11 +8,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.bson.Document
 import org.bson.types.ObjectId
+import pro.aswin.utils.AppConstants.OTP.DEFAULT_EXPIRY_DURATION_IN_MILLIS
 import pro.aswin.utils.Extensions.getVariableKeyName
 
-class MongoOTPDataSource(mongoClient: MongoClient) : OTPDataSource {
+class MongoOTPDataSource(database: MongoDatabase) : OTPDataSource {
 
-    private val database: MongoDatabase = mongoClient.getDatabase("shg_db")
     private val otpCollection: MongoCollection<OTP> = database.getCollection("otps", OTP::class.java)
 
     override suspend fun createOTP(otp: OTP): OTP = withContext(Dispatchers.IO) {
@@ -24,18 +24,18 @@ class MongoOTPDataSource(mongoClient: MongoClient) : OTPDataSource {
         otpCollection.find(Document("otpCode", otpCode)).firstOrNull()
     }
 
-    override suspend fun validateOTP(id: ObjectId, memberId: ObjectId, expiryTimeThreshold: Long): OTP? {
+    override suspend fun validateOTP(request: ValidateOtpRequest): OTP? {
         val query = and(
-            eq(OTP::memberId.getVariableKeyName(), memberId),
-            eq(OTP::id.getVariableKeyName(), id),
-            gte(OTP::expiryTime.getVariableKeyName(), expiryTimeThreshold)
+            eq(OTP::memberId.getVariableKeyName(), request.memberId),
+            eq(OTP::id.getVariableKeyName(), request.id),
+            lte(OTP::expiryTime.getVariableKeyName(), request.expiryTimeThreshold?:0L)
         )
         val otpFetched = otpCollection.find(query).firstOrNull()
         return otpFetched
     }
 
-    override suspend fun deleteOTP(otpCode: String): Boolean = withContext(Dispatchers.IO) {
-        val result = otpCollection.deleteOne(Document("otpCode", otpCode))
+    override suspend fun deleteOTP(id: String): Boolean = withContext(Dispatchers.IO) {
+        val result = otpCollection.deleteOne(Document(OTP::id.getVariableKeyName(), id))
         return@withContext result.deletedCount > 0
     }
 
@@ -44,9 +44,8 @@ class MongoOTPDataSource(mongoClient: MongoClient) : OTPDataSource {
     }
 
     override suspend fun generateOTPExpiryTime(): Long {
-        val thirtyMinutesInMillis = 30 * 60 * 1000 // 30 minutes in milliseconds
         val currentTimeMillis = System.currentTimeMillis()
-        val expirySetAfter30Minutes = currentTimeMillis + thirtyMinutesInMillis
+        val expirySetAfter30Minutes = currentTimeMillis + DEFAULT_EXPIRY_DURATION_IN_MILLIS
         return expirySetAfter30Minutes
     }
 }

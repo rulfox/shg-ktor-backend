@@ -1,5 +1,6 @@
 package pro.aswin.member.data
 
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.bson.codecs.pojo.annotations.BsonCreator

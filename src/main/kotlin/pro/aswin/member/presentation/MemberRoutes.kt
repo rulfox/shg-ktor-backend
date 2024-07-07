@@ -14,7 +14,9 @@ import pro.aswin.member.domain.RegisterMemberUseCase
 import pro.aswin.member.domain.UpdateMemberUseCase
 import pro.aswin.member.routing.MemberRegisterRequest
 import pro.aswin.otp.ValidateOTPUseCase
+import pro.aswin.otp.ValidateOtpRequest
 import pro.aswin.utils.ApiResponse
+import pro.aswin.utils.Extensions.getVariableKeyName
 
 fun Route.memberRoutes() {
 
@@ -33,10 +35,10 @@ fun Route.memberRoutes() {
         }
 
         post("/validate-otp") {
-            val params = call.receive<Parameters>()
-            val otpCode = params["otpCode"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing otpCode")
-            val memberId = params["memberId"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing memberId")
-            val response = validateOTPUseCase.execute(otpCode, memberId)
+            val request = call.receiveNullable<ValidateOtpRequest>()?: return@post call.respond(HttpStatusCode.BadRequest, "Params ${ValidateOtpRequest::id.getVariableKeyName()}, ${ValidateOtpRequest::memberId.getVariableKeyName()} missing")
+            request.id ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing ${ValidateOtpRequest::id.getVariableKeyName()}")
+            request.memberId ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing ${ValidateOtpRequest::memberId.getVariableKeyName()}")
+            val response = validateOTPUseCase.execute(request)
             handleResponse(call, response)
         }
 
